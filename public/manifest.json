@@ -1,0 +1,26 @@
+{
+    "short_name": "ReacTube",
+    "name": "ReacTube App",
+    "icons": [
+      {
+        "src": "https://cdn-icons-png.flaticon.com/512/3820/3820291.png",
+        "sizes": "64x64 32x32 24x24 16x16",
+        "type": "image/x-png"
+      },
+      {
+        "src": "https://cdn-icons-png.flaticon.com/512/3820/3820291.png",
+        "type": "image/png",
+        "sizes": "192x192",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "https://cdn-icons-png.flaticon.com/512/3820/3820291.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "./index.html",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }
