@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
 import "../App.css";
 import VideoModal from "./VideoModal.jsx";
 import LoaderModal from "./LoaderModal";
@@ -119,10 +118,7 @@ const Navbar = () => {
 
   return (
     <>
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.9 }}
+      <div
         className="bg-custom"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -255,7 +251,7 @@ const Navbar = () => {
 
           </div>
         </div>
-      </motion.nav>
+      </div>
 
       {/* video modal component */}
       {showModal && (

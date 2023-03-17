@@ -1,6 +1,7 @@
 import React from "react";
 // import Navbar from "./Components/Navbar";
 // import TrendingSection from "./Components/TrendingSection";
+import Footer from "./Components/Footer";
 const TrendingSection = React.lazy(() =>
   import("./Components/TrendingSection")
 );
@@ -11,6 +12,7 @@ const App = () => {
     <>
       <Navbar />
       <TrendingSection />
+      <Footer/>
     </>
   );
 };

@@ -37,12 +37,14 @@ const TrendingSection = () => {
   // get api data on every reload only
   // api = 2d50d4fed70d41aebc7baa7acf8f2a0e
   useEffect(() => {
+    setIsLoading(true);
     try {
       axios
         .get(`https://pipedapi.kavin.rocks/trending?region=${region}`)
         .then((res) => {
           console.log(res.data);
           setTrending(res.data); //storing response in trending variable/state
+          setIsLoading(false);
         });
     } catch (error) {
       console.log({ error });
