@@ -130,7 +130,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
 
-            <div className="cursor-pointer flex-shrink-0 flex items-center mr-2">
+            <a href="" className="cursor-pointer flex-shrink-0 flex items-center mr-2">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/3820/3820291.png"
                 alt="Logo"
@@ -140,7 +140,7 @@ const Navbar = () => {
                 ReacTube
               </span>
 
-            </div>
+            </a>
 
 
             <div className="relative">

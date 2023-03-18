@@ -136,9 +136,7 @@ const TrendingSection = () => {
                     key={`val-${index}`}
                   >
                     <a
-                      // href={"https://youtube.com" + val.ID}
                       className="h-48 w-full object-cover object-center rounded-t-lg cursor-pointer"
-                    // onClick={() => { handleVideoClick(videoUrl) }}
 
                     >
                       <img
@@ -151,7 +149,6 @@ const TrendingSection = () => {
 
                     <div className="px-6 py-1">
                       <a
-                        // href={"https://youtube.com" + val.ID}
                         className="font-semibold mb-2 cursor-pointer title text-sm"
                         onClick={() => { handleVideoClick(videoUrl) }}
                       >
@@ -159,7 +156,7 @@ const TrendingSection = () => {
                       </a>
 
                       <div className="flex items-center mb-1">
-                        <a href={"https://youtube.com" + val.uploaderUrl}>
+                        <a href="">
                           {" "}
                           <img
                             className="w-8 h-8 rounded-full mr-4 "
@@ -169,7 +166,7 @@ const TrendingSection = () => {
                         </a>
                         <div className="text-sm ml-2">
                           <a
-                            href={"https://youtube.com" + val.uploaderUrl}
+                            href=""
                             className="leading-none text-sm"
                           >
                             {val.uploaderName}
