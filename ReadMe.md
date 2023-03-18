@@ -6,8 +6,8 @@
 
 
 ## Description 🦚
-**ReacTube**, is a simple, single page, privacy friendly & distraction free YouTube front-end based on [Piped APIs](https://piped-docs.kavin.rocks/docs/api-documentation/). ReacTube does not contain features like subscriptions, library, registrations etc. It is designed in order to just search and watch and to be focused and particular about what user wants to watch rather than recommendations or handling subscriptions etc.
-It  provides a smooth and personalised user experience with features including:
+**ReacTube**, is a simple, single page, privacy friendly & distraction free YouTube front-end based on [Piped APIs](https://piped-docs.kavin.rocks/docs/api-documentation/). ReacTube does not contain features like subscriptions, library, registrations etc. It is designed in order to just search and watch, i.e. to be focused and particular about what user wants to watch rather than wasting time with recommendations or handling subscriptions etc.
+Its aim is to provides a simple and smooth user experience with features including:
 
  - **PWA** 
  - **Trendings**  
