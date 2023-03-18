@@ -17,12 +17,12 @@ It  provides a smooth and personalised user experience with features including:
 
 
 ## Screenshots 🖼
-<p align="center">
-
-  <img src="./src/images/trendings.JPG" width="45%" alt="TrendingPage"> <br>
-  <img src="./src/images/searchResults.JPG" width="45%" alt="SearchResults"> <br>
-  <img src="./src/images/VideoPlayer.JPG" width="45%" alt="VideoPlayer"> <br>
-</p>
+   - **Trending Page**  <br>
+  <img src="./src/images/trendings.JPG" width="45%" alt="TrendingPage"> <br> <br>
+   - **Search Results**  <br>
+  <img src="./src/images/searchResults.JPG" width="45%" alt="SearchResults"> <br> <br>
+   - **Video Player**  <br>
+  <img src="./src/images/VideoPlayer.JPG" width="45%" alt="VideoPlayer"> <br> <br>
 
 ## ToDo
 
