@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from "axios";
+import { RiPlayList2Fill } from "react-icons/ri";
 import "../App.css";
 
-function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery,nextPage }) {
+function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery, nextPage }) {
     const [loadingMore, setLoadingMore] = useState(false);
 
     // function to handle the click event
@@ -66,11 +67,11 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
 
                             const videoUrl = result.url && result.url.split("v=").pop();
 
-                            return (
-
-                                <li key={`result-${index}`} className="mb-2">
-                                    <div className="flex items-center space-x-4">
-                                        {result.thumbnail && (
+                            if (result.type == "stream") {
+                                // handle streams
+                                return (
+                                    <li key={`result-${index}`} className="mb-2">
+                                        <div className="flex items-center space-x-4">
                                             <div className="flex-shrink-0 w-4/12">
                                                 <img
                                                     src={result.thumbnail}
@@ -79,34 +80,77 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                                                     onClick={() => { handleVideoClick(videoUrl) }}
                                                 />
                                             </div>
-                                        )}
-                                        <div className="flex-grow w-8/12">
-                                            <a
-                                                title="Title"
-                                                rel="noreferrer"
-                                                className="title cursor-pointer text-base font-semibold text-blue-600 hover:underline text-black dark:text-white hover:text-purple-400 !important"
-                                                onClick={() => { handleVideoClick(videoUrl) }}
-                                            >
-                                                {result.title}
-                                            </a>
-                                            <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                                <div className="flex-shrink-0 w-6 h-6">
-                                                    <img
-                                                        src={result.uploaderAvatar}
-                                                        alt="Uploader"
-                                                        className="w-full h-auto object-cover rounded-full cursor-pointer"
-                                                    />
+                                            <div className="flex-grow w-8/12">
+                                                <a
+                                                    title="Title"
+                                                    rel="noreferrer"
+                                                    className="title cursor-pointer text-base font-semibold text-blue-600 hover:underline text-black dark:text-white hover:text-purple-400 !important"
+                                                    onClick={() => { handleVideoClick(videoUrl) }}
+                                                >
+                                                    {result.title}
+                                                </a>
+
+                                                <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                    <div className="flex-shrink-0 w-6 h-6">
+                                                        <img
+                                                            src={result.uploaderAvatar}
+                                                            alt="Uploader"
+                                                            className="w-full h-auto object-cover rounded-full cursor-pointer"
+                                                        />
+                                                    </div>
+                                                    <span>{result.uploaderName}</span>
                                                 </div>
-                                                <span>{result.uploaderName}</span>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <hr className="my-2 border-gray-300 dark:border-gray-600" />
-                                </li>
+                                        <hr className="my-2 border-gray-300 dark:border-gray-600" />
+                                    </li>
+
+                                );
+                            }
+                            else {
+                                // handle playlists li element
+                                return (
+                                    <li key={`result-${index}`} className="mb-2">
+                                        <div className="flex items-center space-x-4">
+                                            <div className="flex-shrink-0 w-4/12 relative">
+                                                <img
+                                                    src={result.thumbnail}
+                                                    alt="Thumbnail"
+                                                    className="w-full h-auto object-cover rounded cursor-pointer"
+                                                // onClick={() => { handleVideoClick(videoUrl) }}
+                                                />
+                                                <div className="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center left-auto right-0 w-5/12">
+                                                    <div className="text-white text-center">
+                                                        {result.videos}
+                                                        <RiPlayList2Fill />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-grow w-8/12">
+                                                <a
+                                                    title="Title"
+                                                    rel="noreferrer"
+                                                    className="title cursor-pointer text-base font-semibold text-blue-600 hover:underline text-black dark:text-white hover:text-purple-400 !important"
+                                                // onClick={() => { handleVideoClick(videoUrl) }}
+                                                >
+                                                    {result.name}
+                                                </a>
+
+                                                <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                    <span>{result.uploaderName}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr className="my-2 border-gray-300 dark:border-gray-600" />
+                                    </li>
+
+                                );
+                            }
 
 
-                            )
                         })}
                     </ul>
                     <button className="w-full py-2 text-white bg-purple-500 rounded mt-4 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-800" onClick={handleLoadMore}>

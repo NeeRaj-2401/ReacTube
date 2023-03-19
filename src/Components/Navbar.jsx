@@ -12,9 +12,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  //for load more
-  const [nextPage, setNextPage] = useState(1);
-
+  const [nextPage, setNextPage] = useState(1); // for load more, hence to store nextpage url fetched from API
 
   const [showModal, setShowModal] = useState(false);
   const [videoUrl, setVideoUrl] = useState(null);
@@ -52,12 +50,14 @@ const Navbar = () => {
 
     try {
       // call API or perform search here
+  
       axios
         .get(
-          `https://pipedapi.kavin.rocks/search?q=${searchQuery}&filter=videos&filter=music_songs&filter=music_videos`
+          `https://pipedapi.kavin.rocks/search?q=${searchQuery}&filter=videos`
         )
         .then((res) => {
           //console.log(res.data);
+          console.log(res.data.items);
           setSearchResults(res.data.items);
           setNextPage(res.data.nextpage);
           setIsLoading(false);
