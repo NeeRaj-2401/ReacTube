@@ -26,10 +26,8 @@ Its aim is to provides a simple and smooth user experience with features includi
 
 ## ToDo
 
-- [ ] proper components and apply best practices of react
-- [ ] code cleanups 
+- [ ] proper components & code cleanups (help wanted)
 - [ ] manage diff search results such as playlists
-- [ ] Countries Dropdown Improve 
 
 ## Acknowledgements 🙏
 - [Piped](https://github.com/teampiped/piped)
