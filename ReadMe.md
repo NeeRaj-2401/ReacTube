@@ -26,7 +26,7 @@ Its aim is to provides a simple and smooth user experience with features includi
 
 ## ToDo
 
-- [ ] proper components & code cleanups (help wanted)
+- [ ] code cleanups (help wanted)
 - [ ] manage diff search results such as playlists
 
 ## Acknowledgements 🙏
