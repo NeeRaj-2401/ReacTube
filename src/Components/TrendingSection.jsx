@@ -21,9 +21,8 @@ const TrendingSection = () => {
       axios
         .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
         .then((videoclickresponse) => {
-          console.log(videoclickresponse.data.hls);
+          //console.log(videoclickresponse.data.hls);
           setVideoUrl(videoclickresponse.data.hls);
-          //storing response in trending variable/state
           setIsLoading(false); // set isLoading to false when the video is fetched successfully
         });
     } catch (error) {
@@ -34,7 +33,7 @@ const TrendingSection = () => {
     setShowModal(true);
   };
 
-  // get api data on every reload only
+  // get api data on every reload or region change
   // api = 2d50d4fed70d41aebc7baa7acf8f2a0e
   useEffect(() => {
     setIsLoading(true);
@@ -42,8 +41,8 @@ const TrendingSection = () => {
       axios
         .get(`https://pipedapi.kavin.rocks/trending?region=${region}`)
         .then((res) => {
-          console.log(res.data);
-          setTrending(res.data); //storing response in trending variable/state
+          //console.log(res.data);
+          setTrending(res.data); 
           setIsLoading(false);
         });
     } catch (error) {
@@ -60,6 +59,7 @@ const TrendingSection = () => {
   const countries = [
     { code: "IN", name: "India" },
     { code: "US", name: "US" },
+    { code: "DE", name: "Germany" },
     // add more countries as needed
   ];
 
@@ -104,101 +104,100 @@ const TrendingSection = () => {
     < >
 
       <div className="bg-gray-800">
-    
-      {/* Main Component  */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.9 }}
-        className="container mx-auto bg-gray-800 text-white dark w-full"
-      >
-        <h1 className="text-3xl font-bold py-4 px-4">
-          Trendings in{" "}
-          <select value={region} onChange={handleRegionChange} className="w-40 rounded-lg border bg-white bg-opacity-10">
-            {countries.map((country) => (
-              <option key={country.code} value={country.code}>
-                {country.name}
-              </option>
-            ))}
-          </select>
-        </h1>
-        <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center relative ${showModal ? 'opacity-50 blur-sm' : ''}`}>
 
-          {trending.map((val, index) => {
+        {/* Main Component  */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.9 }}
+          className="container mx-auto bg-gray-800 text-white dark w-full"
+        >
+          <h1 className="text-3xl font-bold py-4 px-4">
+            Trendings in{" "}
+            <select value={region} onChange={handleRegionChange} className="w-40 rounded-lg border bg-white bg-opacity-10">
+              {countries.map((country) => (
+                <option key={country.code} value={country.code} className="text-gray-900" >
+                  {country.name}
+                </option>
+              ))}
+            </select>
+          </h1>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center relative ${showModal ? 'opacity-50 blur-sm' : ''}`}>
 
-            const videoUrl = val.url && val.url.split("v=").pop();
+            {trending.map((val, index) => {
 
-            return (
-              <>
-                <Zoom>
-                  <div
-                    className="w-full rounded-lg border-2 border-gray-600 shadow-md"
-                    key={`val-${index}`}
-                  >
-                    <a
-                      className="h-48 w-full object-cover object-center rounded-t-lg cursor-pointer"
+              const videoUrl = val.url && val.url.split("v=").pop();
 
+              return (
+                <>
+                  <Zoom>
+                    <div
+                      className="w-full rounded-lg border-2 border-gray-600 shadow-md cursor-pointer"
+                      key={`val-${index}`}
+                      onClick={() => { handleVideoClick(videoUrl) }}
                     >
-                      <img
-                        src={val.thumbnail}
-                        alt="img"
-                        className="h-48 w-full object-cover object-center rounded-t-lg"
-                        onClick={() => { handleVideoClick(videoUrl) }}
-                      />
-                    </a>
-
-                    <div className="px-6 py-1">
                       <a
-                        className="font-semibold mb-2 cursor-pointer title text-sm"
-                        onClick={() => { handleVideoClick(videoUrl) }}
+                        className="h-48 w-full object-cover object-center rounded-t-lg "
                       >
-                        #{index + 1} - {val.title}
+                        <img
+                          src={val.thumbnail}
+                          alt="img"
+                          className="h-48 w-full object-cover object-center rounded-t-lg"
+
+                        />
                       </a>
 
-                      <div className="flex items-center mb-1">
-                        <a href="">
-                          {" "}
-                          <img
-                            className="w-8 h-8 rounded-full mr-4 "
-                            src={val.uploaderAvatar}
-                            alt="C"
-                          />
+                      <div className="px-6 py-1">
+                        <a
+                          className="font-semibold mb-2 title text-sm"
+                        >
+                          #{index + 1} - {val.title}
                         </a>
-                        <div className="text-sm ml-2">
-                          <a
-                            href=""
-                            className="leading-none text-sm"
-                          >
-                            {val.uploaderName}
-                          </a>
-                          <div className="flex justify-between items-center mb-2">
-                            <p className="text-gray-400 text-sm">
-                              {formatNumber(val.views)}{" "}
-                            </p>{" "}
-                            &nbsp; &#183; &nbsp;
-                            <p className="text-gray-400 text-sm">
-                              {handleUploadTimeFormat(val.uploadedDate)}
-                            </p>
+
+                        <div className="flex items-center mb-1">
+                          <span>
+                            {" "}
+                            <img
+                              className="w-8 h-8 rounded-full mr-4 "
+                              src={val.uploaderAvatar}
+                              alt="C"
+                            />
+                          </span>
+                          <div className="text-sm ml-2">
+                            <span
+
+                              className="leading-none text-sm"
+                            >
+                              {val.uploaderName}
+                            </span>
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="text-gray-400 text-sm">
+                                {formatNumber(val.views)}{" "}
+                              </p>{" "}
+                              &nbsp; &#183; &nbsp;
+                              <p className="text-gray-400 text-sm">
+                                {handleUploadTimeFormat(val.uploadedDate)}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Zoom>
+                  </Zoom>
 
-              </>
-            );
+                </>
+              );
 
-          })}
+            })}
 
-        </div>
-      </motion.div>
-      {/* video modal component */}
-      {showModal && (
-        <VideoModal showModal={showModal} setShowModal={setShowModal} videoUrl={videoUrl} />
-      )}
-      {/* Loader modal component */}
-      {isLoading && <LoaderModal />} {/* render the Loader component in a modal */}
+          </div>
+        </motion.div>
+        {/* video modal component */}
+        {showModal && (
+          <VideoModal showModal={showModal} setShowModal={setShowModal} videoUrl={videoUrl} />
+        )}
+        {/* Loader modal component */}
+        {isLoading && <LoaderModal />} {/* render the Loader component in a modal */}
 
       </div>
     </>

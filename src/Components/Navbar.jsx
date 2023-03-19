@@ -12,7 +12,6 @@ const Navbar = () => {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   //for load more
-  const [currentPage, setCurrentPage] = useState(1);
   const [nextPage, setNextPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -28,16 +27,13 @@ const Navbar = () => {
       axios
         .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
         .then((videoclickresponse) => {
-          console.log(videoclickresponse.data.hls);
-          setVideoUrl(videoclickresponse.data.hls);
-          //storing response in trending variable/state
+          //console.log(videoclickresponse.data.hls);
+          setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
           setIsLoading(false);
         });
     } catch (error) {
       console.log({ error });
     }
-
-
     setShowModal(true);
   };
 
@@ -58,7 +54,7 @@ const Navbar = () => {
           `https://pipedapi.kavin.rocks/suggestions?query=${event.target.value}`
         )
         .then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           setSearchSuggestions(res.data);
         });
     } catch (error) {
@@ -78,8 +74,7 @@ const Navbar = () => {
           `https://pipedapi.kavin.rocks/search?q=${searchQuery}&filter=videos&filter=music_songs&filter=music_videos`
         )
         .then((res) => {
-          console.log(res.data);
-
+          //console.log(res.data);
           setSearchResults(res.data.items);
           setNextPage(res.data.nextpage);
           setIsLoading(false);
@@ -92,7 +87,6 @@ const Navbar = () => {
   // Load More Results
   function handleLoadMore(event) {
     event.preventDefault();
-
     setLoadingMore(true); // Set loading to true when the button is clicked
 
     try {
@@ -104,9 +98,7 @@ const Navbar = () => {
         .then((res) => {
           // console.log(res.data.items);
           setSearchResults([...searchResults, ...res.data.items]);
-          console.log(searchResults);
-          setCurrentPage(currentPage + 1);
-
+          //console.log(searchResults);
           setLoadingMore(false); // Set loading back to false after the results are loaded
         });
     } catch (error) {
@@ -190,7 +182,6 @@ const Navbar = () => {
                       className="absolute top-0 right-0 m-4 font-bold text-xl text-gray-500 hover:text-gray-200 dark:text-gray-200 dark:hover:text-gray-500"
                       onClick={() => {
                         setSearchResults([]);
-                        setCurrentPage(1);
                       }}
                     >
                       X
