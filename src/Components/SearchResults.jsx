@@ -1,10 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from "axios";
 import { RiPlayList2Fill } from "react-icons/ri";
 import "../App.css";
 
 function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery, nextPage }) {
     const [loadingMore, setLoadingMore] = useState(false);
+
+    // search filters
+    const [filter, setFilter] = useState("videos");
+
+    const filters = [
+        { filterCode: "videos", filterName: "video" },
+        { filterCode: "playlists", filterName: "playlist" },
+        { filterCode: "music_songs", filterName: "YM songs" },
+        { filterCode: "music_videos", filterName: "YM videos" },
+        { filterCode: "music_playlists", filterName: "YM list" },
+    ];
+
+    // function to handle region selection
+    const handleFilterChange = (event) => {
+        const newFilter = event.target.value;
+        setIsLoading(true);
+        try {
+            axios
+                .get(`https://watchapi.whatever.social/search?q=${searchQuery}&filter=${newFilter}`)
+                .then((res) => {
+                    console.log(res.data.items)
+                    setSearchResults(res.data.items);
+                    setIsLoading(false);
+                    setFilter(newFilter);
+                });
+        } catch (error) {
+            console.log({ error });
+        }
+    };
+
+
+
 
     // function to handle the click event
     const handleVideoClick = (ID) => {
@@ -61,7 +93,18 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                     >
                         X
                     </button>
-                    <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Search Results</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Search Results
+
+                        <select value={filter} onChange={handleFilterChange} className="w-40 rounded-lg border bg-white bg-opacity-10 ml-1 sm:mt-3">
+                            {filters.map((filt) => (
+                                <option key={filt.filterCode} value={filt.filterCode} className="text-gray-900" >
+                                    {filt.filterName}
+                                </option>
+                            ))}
+                        </select>
+
+                    </h2>
+
                     <ul className="max-h-60vh overflow-y-auto">
                         {searchResults.map((result, index) => {
 
@@ -91,13 +134,13 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                                                 </a>
 
                                                 <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                                    <div className="flex-shrink-0 w-6 h-6">
+                                                    { result.uploaderAvatar && (<div className="flex-shrink-0 w-6 h-6">
                                                         <img
                                                             src={result.uploaderAvatar}
                                                             alt="Uploader"
                                                             className="w-full h-auto object-cover rounded-full cursor-pointer"
                                                         />
-                                                    </div>
+                                                    </div>)}
                                                     <span>{result.uploaderName}</span>
                                                 </div>
                                             </div>
