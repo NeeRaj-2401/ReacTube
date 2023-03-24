@@ -15,7 +15,6 @@ Its aim is to provides a simple and smooth user experience with features includi
  - **Streaming videos** 
  - **Dark Mode** 
 
-
 ## Screenshots 🖼
    - **Trending Page**  <br>
   <img src="./src/images/trendings.JPG" width="45%" alt="TrendingPage"> <br> <br>
@@ -27,7 +26,6 @@ Its aim is to provides a simple and smooth user experience with features includi
 ## ToDo
 
 - [ ] code cleanups (help wanted)
-- [ ] manage diff search results such as playlists
 
 ## Acknowledgements 🙏
 - [Piped](https://github.com/teampiped/piped)
