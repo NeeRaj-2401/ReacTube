@@ -6,7 +6,9 @@ import PlaylistModal from "./PlaylistModal.jsx";
 
 function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery, nextPage }) {
     const [loadingMore, setLoadingMore] = useState(false);
-    const [playlistResults, setPlaylistResults] = useState();
+    const [playlistVideoResults, setPlaylistVideoResults] = useState();
+    const [playlistInfo, setPlaylistInfo] = useState();
+    const [playlistID, setPlaylistID] = useState();
     const [isPlaylistClicked, setIsPlaylistClicked] = useState(false);
 
     // search filters
@@ -38,9 +40,6 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         }
     };
 
-
-
-
     // function to handle the click event
     const handleVideoClick = (ID) => {
         setIsLoading(true);
@@ -68,7 +67,9 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                 .get(`https://pipedapi.kavin.rocks/playlists/${ID}`)
                 .then((playlistClickResponse) => {
                     //console.log(playlistClickResponse.data.relatedStreams);
-                    setPlaylistResults(playlistClickResponse.data.relatedStreams);
+                    setPlaylistVideoResults(playlistClickResponse.data.relatedStreams);
+                    setPlaylistInfo(playlistClickResponse.data);
+                    setPlaylistID(ID);
                     setIsLoading(false);
                     setIsPlaylistClicked(true);
                 });
@@ -237,7 +238,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                 </div>
             </div>
             {/* Playlist modal component */}
-            {isPlaylistClicked && (<PlaylistModal isPlaylistClicked={isPlaylistClicked} setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistResults={playlistResults} setPlaylistResults={setPlaylistResults} />)}
+            {isPlaylistClicked && (<PlaylistModal  setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistVideoResults={playlistVideoResults} setPlaylistVideoResults={setPlaylistVideoResults} playlistInfo={playlistInfo} setPlaylistInfo={setPlaylistInfo} playlistID={playlistID}/>)}
         </>
     )
 }

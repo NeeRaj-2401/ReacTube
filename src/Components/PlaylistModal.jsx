@@ -1,7 +1,56 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 
-function PlaylistModal({ isPlaylistClicked, setIsPlaylistClicked, setShowModal, setIsLoading, setVideoUrl, playlistResults, setPlaylistResults }) {
+function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVideoUrl, playlistVideoResults, setPlaylistVideoResults, playlistInfo, setPlaylistInfo, playlistID }) {
     const [loadingMore, setLoadingMore] = useState(false);
+    const [nextPage, setNextPage] = useState(playlistInfo.nextpage)
+
+    // function to handle the click event
+    const handleVideoClick = (ID) => {
+        setIsLoading(true);
+        try {
+            axios
+                .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
+                .then((videoclickresponse) => {
+                    //console.log(videoclickresponse.data.hls);
+                    setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
+                    setIsLoading(false);
+                });
+        } catch (error) {
+            console.log({ error });
+        }
+        setShowModal(true);
+    };
+
+    // load more
+    function handleLoadMore(event) {
+        event.preventDefault();
+        setLoadingMore(true); // Set loading to true when the button is clicked
+
+
+
+        try {
+            // call API or perform search here
+            axios
+                .get(
+                    `https://pipedapi.kavin.rocks/nextpage/playlists/${playlistID}?nextpage=${encodeURIComponent(nextPage)}`
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    setPlaylistVideoResults((prevResults) => [
+                        ...prevResults,
+                        ...res.data.relatedStreams,
+                    ]);
+                    //console.log(searchResults);
+                    setLoadingMore(false); // Set loading back to false after the results are loaded
+
+                    setNextPage(res.data.nextpage || false);
+                });
+        } catch (error) {
+            console.log({ error });
+        }
+    }
+
 
     return (
         <>
@@ -14,16 +63,19 @@ function PlaylistModal({ isPlaylistClicked, setIsPlaylistClicked, setShowModal, 
                         <button
                             className="absolute top-0 right-0 m-4 font-bold text-xl text-gray-500 hover:text-gray-200 dark:text-gray-200 dark:hover:text-gray-500"
                             onClick={() => {
-                                setPlaylistResults([]);
+                                setPlaylistVideoResults([]);
+                                setPlaylistInfo([]);
                                 setIsPlaylistClicked(false);
                             }}
                         >
                             X
                         </button>
-                        <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Playlist Videos </h2>
+                        <h2 className="text-2xl font-bold mb-4 text-black dark:text-white title"> {playlistInfo.name} </h2>
 
                         <ul className="max-h-60vh overflow-y-auto">
-                            {playlistResults.map((result, index) => {
+                            {playlistVideoResults.map((result, index) => {
+
+                                const videoUrl = result.url && result.url.split("v=").pop();
 
                                 return (
 
@@ -34,7 +86,7 @@ function PlaylistModal({ isPlaylistClicked, setIsPlaylistClicked, setShowModal, 
                                                     src={result.thumbnail}
                                                     alt="Thumbnail"
                                                     className="w-full h-auto object-cover rounded cursor-pointer"
-                                                // onClick={() => { handleVideoClick(videoUrl) }}
+                                                    onClick={() => { handleVideoClick(videoUrl) }}
                                                 />
                                             </div>
                                             <div className="flex-grow w-8/12">
@@ -42,7 +94,7 @@ function PlaylistModal({ isPlaylistClicked, setIsPlaylistClicked, setShowModal, 
                                                     title="Title"
                                                     rel="noreferrer"
                                                     className="title cursor-pointer text-base font-semibold text-blue-600 hover:underline text-black dark:text-white hover:text-purple-400 !important"
-                                                // onClick={() => { handleVideoClick(videoUrl) }}
+                                                    onClick={() => { handleVideoClick(videoUrl) }}
                                                 >
                                                     {result.title}
                                                 </a>
@@ -66,22 +118,25 @@ function PlaylistModal({ isPlaylistClicked, setIsPlaylistClicked, setShowModal, 
 
                             })}
                         </ul>
-                        <button className="w-full py-2 text-white bg-purple-500 rounded mt-4 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-800"
-                        // onClick={handleLoadMore}
-                        >
-                            {loadingMore ? (
-                                <div className="flex items-center justify-center">
-                                    <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 016.05 13H4.007c.11.626.284 1.239.528 1.837zm3.472-3.471A3.978 3.978 0 018 12c0-.708-.191-1.373-.522-1.958l-1.421 1.422zm4.722-4.721l-1.422.522A3.978 3.978 0 0112 8c0 .708.191 1.373.522 1.958zm3.472 3.472A7.962 7.962 0 0117.95 13h-2.043a15.936 15.936 0 00-.526-1.837zm1.046 3.174A9.96 9.96 0 0122 12c0 2.146-.684 4.125-1.834 5.746l-1.416-1.416z"></path>
-                                    </svg>
-                                    <span>Loading...</span>
-                                </div>
-                            ) : (
-                                <span>Load More</span>
-                            )}
-                        </button>
 
+                        {nextPage && (
+
+                            <button className="w-full py-2 text-white bg-purple-500 rounded mt-4 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-800"
+                                onClick={handleLoadMore}
+                            >
+                                {loadingMore ? (
+                                    <div className="flex items-center justify-center">
+                                        <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 016.05 13H4.007c.11.626.284 1.239.528 1.837zm3.472-3.471A3.978 3.978 0 018 12c0-.708-.191-1.373-.522-1.958l-1.421 1.422zm4.722-4.721l-1.422.522A3.978 3.978 0 0112 8c0 .708.191 1.373.522 1.958zm3.472 3.472A7.962 7.962 0 0117.95 13h-2.043a15.936 15.936 0 00-.526-1.837zm1.046 3.174A9.96 9.96 0 0122 12c0 2.146-.684 4.125-1.834 5.746l-1.416-1.416z"></path>
+                                        </svg>
+                                        <span>Loading...</span>
+                                    </div>
+                                ) : (
+                                    <span>Load More</span>
+                                )}
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
