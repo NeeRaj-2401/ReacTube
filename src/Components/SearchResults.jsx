@@ -11,6 +11,8 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
     const [playlistID, setPlaylistID] = useState();
     const [isPlaylistClicked, setIsPlaylistClicked] = useState(false);
 
+    const [changedNextpage, setChangedNextpage] = useState(nextPage);
+
     // search filters
     const [filter, setFilter] = useState("videos");
 
@@ -32,6 +34,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                 .then((res) => {
                     console.log(res.data.items)
                     setSearchResults(res.data.items);
+                    setChangedNextpage(res.data.nextpage);
                     setIsLoading(false);
                     setFilter(newFilter);
                 });
@@ -86,16 +89,15 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
 
         try {
             // call API or perform search here
-            axios
-                .get(
-                    `https://pipedapi.kavin.rocks/nextpage/search?nextpage=${encodeURIComponent(nextPage)}&q=${encodeURIComponent(searchQuery)}&filter=videos&filter=music_songs&filter=music_videos`
-                )
-                .then((res) => {
-                    // console.log(res.data.items);
-                    setSearchResults([...searchResults, ...res.data.items]);
-                    //console.log(searchResults);
-                    setLoadingMore(false); // Set loading back to false after the results are loaded
-                });
+
+            axios.get(
+                `https://pipedapi.kavin.rocks/nextpage/search?nextpage=${encodeURIComponent(changedNextpage)}&q=${searchQuery}&filter=${filter}`
+            ).then((res) => {
+                setSearchResults([...searchResults, ...res.data.items]);
+                setLoadingMore(false);
+                setChangedNextpage(res.data.nextpage);
+            });
+
         } catch (error) {
             console.log({ error });
         }
@@ -238,7 +240,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                 </div>
             </div>
             {/* Playlist modal component */}
-            {isPlaylistClicked && (<PlaylistModal  setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistVideoResults={playlistVideoResults} setPlaylistVideoResults={setPlaylistVideoResults} playlistInfo={playlistInfo} setPlaylistInfo={setPlaylistInfo} playlistID={playlistID}/>)}
+            {isPlaylistClicked && (<PlaylistModal setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistVideoResults={playlistVideoResults} setPlaylistVideoResults={setPlaylistVideoResults} playlistInfo={playlistInfo} setPlaylistInfo={setPlaylistInfo} playlistID={playlistID} />)}
         </>
     )
 }
