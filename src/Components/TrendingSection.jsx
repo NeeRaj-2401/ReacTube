@@ -6,7 +6,7 @@ import VideoModal from "./VideoModal.jsx";
 import LoaderModal from "./LoaderModal.jsx";
 import "../App.css";
 
-const TrendingSection = () => {
+const TrendingSection = ({baseUrl}) => {
   const [trending, setTrending] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [videoUrl, setVideoUrl] = useState(null);
@@ -19,7 +19,7 @@ const TrendingSection = () => {
 
     try {
       axios
-        .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
+        .get(`${baseUrl}/streams/${ID}`)
         .then((videoclickresponse) => {
           //console.log(videoclickresponse.data.hls);
           setVideoUrl(videoclickresponse.data.hls);
@@ -39,7 +39,7 @@ const TrendingSection = () => {
     setIsLoading(true);
     try {
       axios
-        .get(`https://pipedapi.kavin.rocks/trending?region=${region}`)
+        .get(`${baseUrl}/trending?region=${region}`)
         .then((res) => {
           //console.log(res.data);
           setTrending(res.data); 

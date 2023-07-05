@@ -5,10 +5,7 @@ import VideoModal from "./VideoModal.jsx";
 import LoaderModal from "./LoaderModal";
 import SearchResults from "./SearchResults";
 
-
-// https://watchapi.whatever.social/search?q=atifaslam&filter=music_songs
-
-const Navbar = () => {
+const Navbar = ({baseUrl}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -32,7 +29,7 @@ const Navbar = () => {
       // Call API for Search Suggestions
       axios
         .get(
-          `https://pipedapi.kavin.rocks/suggestions?query=${event.target.value}`
+          `${baseUrl}/suggestions?query=${event.target.value}`
         )
         .then((res) => {
           //console.log(res.data);
@@ -53,7 +50,7 @@ const Navbar = () => {
   
       axios
         .get(
-          `https://pipedapi.kavin.rocks/search?q=${searchQuery}&filter=videos`
+          `${baseUrl}/search?q=${searchQuery}&filter=videos`
         )
         .then((res) => {
           //console.log(res.data);
@@ -133,7 +130,7 @@ const Navbar = () => {
 
             {/* Results Modal */}
 
-            {searchResults.length > 0 && <SearchResults setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} nextPage={nextPage} />}
+            {searchResults.length > 0 && <SearchResults setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} searchResults={searchResults} setSearchResults={setSearchResults} searchQuery={searchQuery} nextPage={nextPage} baseUrl={baseUrl}/>}
 
           </div>
         </div>

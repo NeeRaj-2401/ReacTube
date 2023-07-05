@@ -4,7 +4,7 @@ import { RiPlayList2Fill } from "react-icons/ri";
 import "../App.css";
 import PlaylistModal from "./PlaylistModal.jsx";
 
-function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery, nextPage }) {
+function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults, setSearchResults, searchQuery, nextPage, baseUrl }) {
     const [loadingMore, setLoadingMore] = useState(false);
     const [playlistVideoResults, setPlaylistVideoResults] = useState();
     const [playlistInfo, setPlaylistInfo] = useState();
@@ -30,7 +30,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         setIsLoading(true);
         try {
             axios
-                .get(`https://watchapi.whatever.social/search?q=${searchQuery}&filter=${newFilter}`)
+                .get(`${baseUrl}/search?q=${searchQuery}&filter=${newFilter}`)
                 .then((res) => {
                     console.log(res.data.items)
                     setSearchResults(res.data.items);
@@ -49,7 +49,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
 
         try {
             axios
-                .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
+                .get(`${baseUrl}/streams/${ID}`)
                 .then((videoclickresponse) => {
                     //console.log(videoclickresponse.data.hls);
                     setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
@@ -67,7 +67,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
 
         try {
             axios
-                .get(`https://pipedapi.kavin.rocks/playlists/${ID}`)
+                .get(`${baseUrl}/playlists/${ID}`)
                 .then((playlistClickResponse) => {
                     //console.log(playlistClickResponse.data.relatedStreams);
                     setPlaylistVideoResults(playlistClickResponse.data.relatedStreams);
@@ -91,7 +91,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
             // call API or perform search here
 
             axios.get(
-                `https://pipedapi.kavin.rocks/nextpage/search?nextpage=${encodeURIComponent(changedNextpage)}&q=${searchQuery}&filter=${filter}`
+                `${baseUrl}/nextpage/search?nextpage=${encodeURIComponent(changedNextpage)}&q=${searchQuery}&filter=${filter}`
             ).then((res) => {
                 setSearchResults([...searchResults, ...res.data.items]);
                 setLoadingMore(false);
@@ -240,7 +240,7 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
                 </div>
             </div>
             {/* Playlist modal component */}
-            {isPlaylistClicked && (<PlaylistModal setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistVideoResults={playlistVideoResults} setPlaylistVideoResults={setPlaylistVideoResults} playlistInfo={playlistInfo} setPlaylistInfo={setPlaylistInfo} playlistID={playlistID} />)}
+            {isPlaylistClicked && (<PlaylistModal setIsPlaylistClicked={setIsPlaylistClicked} setShowModal={setShowModal} setIsLoading={setIsLoading} setVideoUrl={setVideoUrl} playlistVideoResults={playlistVideoResults} setPlaylistVideoResults={setPlaylistVideoResults} playlistInfo={playlistInfo} setPlaylistInfo={setPlaylistInfo} playlistID={playlistID} baseUrl={baseUrl}/>)}
         </>
     )
 }

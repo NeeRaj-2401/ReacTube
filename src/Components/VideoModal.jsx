@@ -4,9 +4,6 @@ import "../App.css";
 
 function VideoModal({ showModal, setShowModal, videoUrl }) {
 
-    //console.log("VideoModal props:", { showModal, setShowModal, videoUrl });
-
-
     return (
         <>
             {showModal && (

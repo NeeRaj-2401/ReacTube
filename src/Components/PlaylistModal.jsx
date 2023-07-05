@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVideoUrl, playlistVideoResults, setPlaylistVideoResults, playlistInfo, setPlaylistInfo, playlistID }) {
+function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVideoUrl, playlistVideoResults, setPlaylistVideoResults, playlistInfo, setPlaylistInfo, playlistID, baseUrl }) {
     const [loadingMore, setLoadingMore] = useState(false);
     const [nextPage, setNextPage] = useState(playlistInfo.nextpage)
 
@@ -10,7 +10,7 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
         setIsLoading(true);
         try {
             axios
-                .get(`https://pipedapi.kavin.rocks/streams/${ID}`)
+                .get(`${baseUrl}/streams/${ID}`)
                 .then((videoclickresponse) => {
                     //console.log(videoclickresponse.data.hls);
                     setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
@@ -33,7 +33,7 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
             // call API or perform search here
             axios
                 .get(
-                    `https://pipedapi.kavin.rocks/nextpage/playlists/${playlistID}?nextpage=${encodeURIComponent(nextPage)}`
+                    `${baseUrl}/nextpage/playlists/${playlistID}?nextpage=${encodeURIComponent(nextPage)}`
                 )
                 .then((res) => {
                     console.log(res.data);
