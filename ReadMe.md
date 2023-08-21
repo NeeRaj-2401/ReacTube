@@ -26,9 +26,9 @@ Its aim is to provides a simple and smooth user experience with features includi
 ## ToDo
 
 - [ ] in-app instance selection
-- [ ] Redirection: An easy way to redirect YouTube links to your frontend. 
-- [ ] Hide Trending: I consider the trending feed to be a distraction, and would appreciate being able to only have a search bar on the home page.
-- [ ] Media Queue: Either the option to enqueue videos to play next, or at the very least to play videos in a single playlist consecutively. 
+- [ ] Redirection: An easy way to redirect YouTube links to this frontend. 
+- [ ] Hide Trending (optional) : only have a search bar on the home page.
+- [ ] Media Queue: Either enqueue, or at least to play videos in a single playlist consecutively. 
 - [ ] code cleanups (help wanted)
 
 
