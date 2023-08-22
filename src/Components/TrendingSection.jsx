@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import Zoom from "react-reveal";
 import VideoModal from "./VideoModal.jsx";
@@ -17,17 +16,15 @@ const TrendingSection = ({baseUrl}) => {
   const handleVideoClick = (ID) => {
     setIsLoading(true); // set isLoading to true when the video is clicked
 
-    try {
-      axios
-        .get(`${baseUrl}/streams/${ID}`)
+      fetch(`${baseUrl}/streams/${ID}`)
         .then((videoclickresponse) => {
           //console.log(videoclickresponse.data.hls);
           setVideoUrl(videoclickresponse.data.hls);
           setIsLoading(false); // set isLoading to false when the video is fetched successfully
-        });
-    } catch (error) {
+        })
+        .catch((error) =>{
       console.log({ error });
-    }
+    })
 
 
     setShowModal(true);
@@ -37,17 +34,15 @@ const TrendingSection = ({baseUrl}) => {
   // api = 2d50d4fed70d41aebc7baa7acf8f2a0e
   useEffect(() => {
     setIsLoading(true);
-    try {
-      axios
-        .get(`${baseUrl}/trending?region=${region}`)
+      fetch(`${baseUrl}/trending?region=${region}`)
         .then((res) => {
           //console.log(res.data);
           setTrending(res.data); 
           setIsLoading(false);
-        });
-    } catch (error) {
+        })
+        .catch((error) => {
       console.log({ error });
-    }
+    })
   }, [region]);
 
   // function to handle region selection
