@@ -17,6 +17,7 @@ const TrendingSection = ({baseUrl}) => {
     setIsLoading(true); // set isLoading to true when the video is clicked
 
       fetch(`${baseUrl}/streams/${ID}`)
+        .then(response => response.json())
         .then((videoclickresponse) => {
           //console.log(videoclickresponse.data.hls);
           setVideoUrl(videoclickresponse.data.hls);
@@ -35,6 +36,7 @@ const TrendingSection = ({baseUrl}) => {
   useEffect(() => {
     setIsLoading(true);
       fetch(`${baseUrl}/trending?region=${region}`)
+        .then(response => response.json())
         .then((res) => {
           //console.log(res.data);
           setTrending(res.data); 
