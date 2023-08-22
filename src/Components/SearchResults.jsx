@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from "axios";
 import { RiPlayList2Fill } from "react-icons/ri";
 import "../App.css";
 import PlaylistModal from "./PlaylistModal.jsx";
@@ -28,36 +27,34 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
     const handleFilterChange = (event) => {
         const newFilter = event.target.value;
         setIsLoading(true);
-        try {
-            axios
-                .get(`${baseUrl}/search?q=${searchQuery}&filter=${newFilter}`)
-                .then((res) => {
-                    console.log(res.data.items)
-                    setSearchResults(res.data.items);
-                    setChangedNextpage(res.data.nextpage);
+            fetch(`${baseUrl}/search?q=${searchQuery}&filter=${newFilter}`)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data.items)
+                    setSearchResults(data.items);
+                    setChangedNextpage(data.nextpage);
                     setIsLoading(false);
                     setFilter(newFilter);
+                })
+                .catch((error) => {
+                    console.log({ error });
                 });
-        } catch (error) {
-            console.log({ error });
-        }
     };
 
     // function to handle the click event
     const handleVideoClick = (ID) => {
         setIsLoading(true);
 
-        try {
-            axios
-                .get(`${baseUrl}/streams/${ID}`)
-                .then((videoclickresponse) => {
-                    //console.log(videoclickresponse.data.hls);
-                    setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
+            fetch(`${baseUrl}/streams/${ID}`)
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.hls);
+                    setVideoUrl(data.hls); //storing response in trending variable/state
                     setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.log({ error });
                 });
-        } catch (error) {
-            console.log({ error });
-        }
         setShowModal(true);
     };
 
@@ -65,20 +62,19 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
     const handlePlaylistClick = (ID) => {
         setIsLoading(true);
 
-        try {
-            axios
-                .get(`${baseUrl}/playlists/${ID}`)
-                .then((playlistClickResponse) => {
-                    //console.log(playlistClickResponse.data.relatedStreams);
-                    setPlaylistVideoResults(playlistClickResponse.data.relatedStreams);
-                    setPlaylistInfo(playlistClickResponse.data);
+            fetch(`${baseUrl}/playlists/${ID}`)
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.relatedStreams);
+                    setPlaylistVideoResults(data.relatedStreams);
+                    setPlaylistInfo(data);
                     setPlaylistID(ID);
                     setIsLoading(false);
                     setIsPlaylistClicked(true);
+                })
+                .catch((error) => {
+                    console.log({ error });
                 });
-        } catch (error) {
-            console.log({ error });
-        }
 
     };
 
@@ -87,20 +83,20 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         event.preventDefault();
         setLoadingMore(true); // Set loading to true when the button is clicked
 
-        try {
             // call API or perform search here
 
-            axios.get(
+            fetch(
                 `${baseUrl}/nextpage/search?nextpage=${encodeURIComponent(changedNextpage)}&q=${searchQuery}&filter=${filter}`
-            ).then((res) => {
-                setSearchResults([...searchResults, ...res.data.items]);
+            )
+                .then(response => response.json())
+                .then((data) => {
+                setSearchResults([...searchResults, ...data.items]);
                 setLoadingMore(false);
-                setChangedNextpage(res.data.nextpage);
-            });
-
-        } catch (error) {
+                setChangedNextpage(data.nextpage);
+            })
+            .catch((error) => {
             console.log({ error });
-        }
+        })
     }
 
     return (

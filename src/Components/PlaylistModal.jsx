@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from 'axios';
 
 function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVideoUrl, playlistVideoResults, setPlaylistVideoResults, playlistInfo, setPlaylistInfo, playlistID, baseUrl }) {
     const [loadingMore, setLoadingMore] = useState(false);
@@ -8,17 +7,16 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
     // function to handle the click event
     const handleVideoClick = (ID) => {
         setIsLoading(true);
-        try {
-            axios
-                .get(`${baseUrl}/streams/${ID}`)
-                .then((videoclickresponse) => {
-                    //console.log(videoclickresponse.data.hls);
-                    setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
+            fetch(`${baseUrl}/streams/${ID}`)
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.hls);
+                    setVideoUrl(data.hls); //storing response in trending variable/state
                     setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.log({ error })
                 });
-        } catch (error) {
-            console.log({ error });
-        }
         setShowModal(true);
     };
 
@@ -29,26 +27,25 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
 
 
 
-        try {
             // call API or perform search here
-            axios
-                .get(
+            fetch(
                     `${baseUrl}/nextpage/playlists/${playlistID}?nextpage=${encodeURIComponent(nextPage)}`
                 )
-                .then((res) => {
-                    console.log(res.data);
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data);
                     setPlaylistVideoResults((prevResults) => [
                         ...prevResults,
-                        ...res.data.relatedStreams,
+                        ...data.relatedStreams,
                     ]);
                     //console.log(searchResults);
                     setLoadingMore(false); // Set loading back to false after the results are loaded
 
-                    setNextPage(res.data.nextpage || false);
+                    setNextPage(data.nextpage || false);
+                })
+                .catch((error) => {
+                    console.log({ error });
                 });
-        } catch (error) {
-            console.log({ error });
-        }
     }
 
 

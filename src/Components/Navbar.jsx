@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "../App.css";
 import VideoModal from "./VideoModal.jsx";
 import LoaderModal from "./LoaderModal";
@@ -18,7 +17,6 @@ const Navbar = ({baseUrl}) => {
 
   // funtion to fetch search suggestion on realtime user input
   function handleSearchQueryChange(event) {
-    try {
       setSearchQuery(event.target.value);
       if (event.target.value.trim() === "") {
         //if input/searching section is empty then set suggestions to empty too.
@@ -27,17 +25,17 @@ const Navbar = ({baseUrl}) => {
       }
 
       // Call API for Search Suggestions
-      axios
-        .get(
+      fetch(
           `${baseUrl}/suggestions?query=${event.target.value}`
         )
-        .then((res) => {
-          //console.log(res.data);
-          setSearchSuggestions(res.data);
+        .then(response => response.json())
+        .then((data) => {
+          //console.log(data);
+          setSearchSuggestions(data);
+        })
+        .catch((error) => {
+          console.log({error});
         });
-    } catch (error) {
-      console.log({ error });
-    }
   }
 
   // function to Fetch Actual search results
@@ -45,23 +43,22 @@ const Navbar = ({baseUrl}) => {
     event.preventDefault();
     setIsLoading(true);
 
-    try {
       // call API or perform search here
   
-      axios
-        .get(
+      fetch(
           `${baseUrl}/search?q=${searchQuery}&filter=videos`
         )
-        .then((res) => {
-          //console.log(res.data);
-          console.log(res.data.items);
-          setSearchResults(res.data.items);
-          setNextPage(res.data.nextpage);
+        .then(response => response.json())
+        .then((data) => {
+          //console.log(data);
+          console.log(data.items);
+          setSearchResults(data.items);
+          setNextPage(data.nextpage);
           setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log({ error })
         });
-    } catch (error) {
-      console.log({ error });
-    }
   }
 
 
