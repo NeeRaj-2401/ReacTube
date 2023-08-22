@@ -28,10 +28,11 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         const newFilter = event.target.value;
         setIsLoading(true);
             fetch(`${baseUrl}/search?q=${searchQuery}&filter=${newFilter}`)
-                .then((res) => {
-                    console.log(res.data.items)
-                    setSearchResults(res.data.items);
-                    setChangedNextpage(res.data.nextpage);
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data.items)
+                    setSearchResults(data.items);
+                    setChangedNextpage(data.nextpage);
                     setIsLoading(false);
                     setFilter(newFilter);
                 })
@@ -45,9 +46,10 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         setIsLoading(true);
 
             fetch(`${baseUrl}/streams/${ID}`)
-                .then((videoclickresponse) => {
-                    //console.log(videoclickresponse.data.hls);
-                    setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.hls);
+                    setVideoUrl(data.hls); //storing response in trending variable/state
                     setIsLoading(false);
                 })
                 .catch((error) => {
@@ -61,10 +63,11 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
         setIsLoading(true);
 
             fetch(`${baseUrl}/playlists/${ID}`)
-                .then((playlistClickResponse) => {
-                    //console.log(playlistClickResponse.data.relatedStreams);
-                    setPlaylistVideoResults(playlistClickResponse.data.relatedStreams);
-                    setPlaylistInfo(playlistClickResponse.data);
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.relatedStreams);
+                    setPlaylistVideoResults(data.relatedStreams);
+                    setPlaylistInfo(data);
                     setPlaylistID(ID);
                     setIsLoading(false);
                     setIsPlaylistClicked(true);
@@ -84,10 +87,12 @@ function SearchResults({ setShowModal, setIsLoading, setVideoUrl, searchResults,
 
             fetch(
                 `${baseUrl}/nextpage/search?nextpage=${encodeURIComponent(changedNextpage)}&q=${searchQuery}&filter=${filter}`
-            ).then((res) => {
-                setSearchResults([...searchResults, ...res.data.items]);
+            )
+                .then(response => response.json())
+                .then((data) => {
+                setSearchResults([...searchResults, ...data.items]);
                 setLoadingMore(false);
-                setChangedNextpage(res.data.nextpage);
+                setChangedNextpage(data.nextpage);
             })
             .catch((error) => {
             console.log({ error });
