@@ -28,6 +28,7 @@ const Navbar = ({baseUrl}) => {
       fetch(
           `${baseUrl}/suggestions?query=${event.target.value}`
         )
+        .then(response => response.json())
         .then((res) => {
           //console.log(res.data);
           setSearchSuggestions(res.data);
@@ -47,6 +48,7 @@ const Navbar = ({baseUrl}) => {
       fetch(
           `${baseUrl}/search?q=${searchQuery}&filter=videos`
         )
+        .then(response => response.json())
         .then((res) => {
           //console.log(res.data);
           console.log(res.data.items);
