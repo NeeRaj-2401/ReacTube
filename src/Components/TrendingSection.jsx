@@ -18,9 +18,9 @@ const TrendingSection = ({baseUrl}) => {
 
       fetch(`${baseUrl}/streams/${ID}`)
         .then(response => response.json())
-        .then((videoclickresponse) => {
-          //console.log(videoclickresponse.data.hls);
-          setVideoUrl(videoclickresponse.data.hls);
+        .then((data) => {
+          //console.log(data.hls);
+          setVideoUrl(data.hls);
           setIsLoading(false); // set isLoading to false when the video is fetched successfully
         })
         .catch((error) =>{
@@ -37,9 +37,9 @@ const TrendingSection = ({baseUrl}) => {
     setIsLoading(true);
       fetch(`${baseUrl}/trending?region=${region}`)
         .then(response => response.json())
-        .then((res) => {
-          //console.log(res.data);
-          setTrending(res.data); 
+        .then((data) => {
+          //console.log(data);
+          setTrending(data); 
           setIsLoading(false);
         })
         .catch((error) => {
