@@ -41,7 +41,7 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
                     //console.log(searchResults);
                     setLoadingMore(false); // Set loading back to false after the results are loaded
 
-                    setNextPage(res.data.nextpage || false);
+                    setNextPage(data.nextpage || false);
                 })
                 .catch((error) => {
                     console.log({ error });
