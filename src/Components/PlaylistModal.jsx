@@ -8,9 +8,10 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
     const handleVideoClick = (ID) => {
         setIsLoading(true);
             fetch(`${baseUrl}/streams/${ID}`)
-                .then((videoclickresponse) => {
-                    //console.log(videoclickresponse.data.hls);
-                    setVideoUrl(videoclickresponse.data.hls); //storing response in trending variable/state
+                .then(response => response.json())
+                .then((data) => {
+                    //console.log(data.hls);
+                    setVideoUrl(data.hls); //storing response in trending variable/state
                     setIsLoading(false);
                 })
                 .catch((error) => {
@@ -30,11 +31,12 @@ function PlaylistModal({ setIsPlaylistClicked, setShowModal, setIsLoading, setVi
             fetch(
                     `${baseUrl}/nextpage/playlists/${playlistID}?nextpage=${encodeURIComponent(nextPage)}`
                 )
-                .then((res) => {
-                    console.log(res.data);
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data);
                     setPlaylistVideoResults((prevResults) => [
                         ...prevResults,
-                        ...res.data.relatedStreams,
+                        ...data.relatedStreams,
                     ]);
                     //console.log(searchResults);
                     setLoadingMore(false); // Set loading back to false after the results are loaded
