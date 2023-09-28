@@ -7,7 +7,7 @@ const TrendingSection = React.lazy(() =>
 );
 const Navbar = React.lazy(() => import("./Components/Navbar"));
 
-const baseUrl = "https://pipedapi.frontendfriendly.xyz";
+const baseUrl = "https://pipedapi-libre.kavin.rocks";
 
 const App = () => {
   return (
