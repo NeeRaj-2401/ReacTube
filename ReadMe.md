@@ -29,7 +29,6 @@ Its aim is to provides a simple and smooth user experience with features includi
 - [ ] Redirection: An easy way to redirect YouTube links to this frontend. 
 - [ ] Hide Trending (optional) : only have a search bar on the home page.
 - [ ] Media Queue: Either enqueue, or at least to play videos in a single playlist consecutively. 
-- [ ] code cleanups (help wanted)
 
 
 ## Acknowledgements 🙏
