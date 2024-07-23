@@ -2,7 +2,9 @@
  <h1> ❄️ ReacTube ❄️ </h1>
 </div>
 
+## Beware ⚠️🚨
 
+> **❗Important : If ReacTube doesn't seem to be working, it is most probably because [Piped](https://github.com/teampiped/piped) is down.**
 
 
 ## Description 🦚
